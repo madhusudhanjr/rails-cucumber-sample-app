@@ -1,4 +1,4 @@
-Feature: Wikipedia page
+Feature: Exchange rate page
 
   @selenium
   Scenario: Viewing XE page
