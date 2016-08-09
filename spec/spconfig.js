@@ -16,7 +16,7 @@ var Jasmine2HtmlReporter = require('protractor-jasmine2-html-reporter');
         specs: [
 
              'RegistrationScenario.js',
-            'LoginScenario.js',
+            'LoginScenario.js'
 
         ],
 

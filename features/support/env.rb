@@ -16,6 +16,18 @@ Before do
   end
 end
 
+Before do |scenario|
+  Rails.logger.debug "Starting scenario: #{scenario.name}"
+end
+
+After do |scenario|
+  if scenario.failed?
+    Rails.logger.debug "Scenario #{scenario.name} failed : #{scenario.exception.message}"
+    Cucumber.wants_to_quit = true
+    raise scenario.exception
+  end
+end
+
 ActionController::Base.allow_rescue = false
 
 begin
