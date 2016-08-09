@@ -16,6 +16,7 @@ var Jasmine2HtmlReporter = require('protractor-jasmine2-html-reporter');
         ],
         onPrepare: function () {
             browser.manage().window().maximize();
+            jasmine.getEnv().throwOnExpectationFailure(true);
             jasmine.getEnv().addReporter(new Jasmine2HtmlReporter({
                 savePath: '.test/reports/'
 

@@ -2,12 +2,15 @@ var FindElement = function(){
     
     this.getsignupElement = function(locator, is_mandate) {
       try {
-        console.log("params " + locator + " params2 " + is_mandate);
         var signUpInput = element(by.id(locator));
-        signUpInput.isDisplayed().toBe(true);
+        expect(signUpInput.isDisplayed()).toBe(true);
         return signUpInput;
       } catch (e) {
-        console.log("Error Stacktrace" + e.stack);
+        var log4js = require('log4js'); 
+        log4js.loadAppender('file');
+        log4js.addAppender(log4js.appenders.file('log/protractor.log'), 'protractor'); 
+        var logger = log4js.getLogger('protractor');
+        logger.debug(e.stack);
         if (is_mandate) {
           browser.driver.close().then(function()
           {
@@ -43,7 +46,7 @@ describe('should allow user to Signup  ', function() {
         var findElement = new FindElement();
         console.log("welcome to Upwork Page");
         expect(element(by.id('signup')).isDisplayed()).toBe(true);
-        var found_elem  = findElement.getsignupElement('signup123blahblah', false);
+        var found_elem  = findElement.getsignupElement('signup', true);
         found_elem.click();
         console.log("User Clicked on Signup link");
     });
