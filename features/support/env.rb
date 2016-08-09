@@ -20,27 +20,55 @@ Before do |scenario|
   Rails.logger.debug "Starting scenario: #{scenario.name}"
 end
 
+# scenario.test_steps.last.name
+
+# Before do |scenario|
+#   # Feature name
+#   binding.pry
+#   case scenario
+#     when Cucumber::Core::Ast::Scenario
+#       @feature_name = scenario.feature.name
+#     # when Cucumber::Core::Ast::OutlineStep
+#       # @feature_name = scenario.test_steps.feature.name
+#   end
+
+#    # Scenario name
+#   case scenario
+#     when Cucumber::Core::Ast::Scenario
+#       @scenario_name = scenario.name
+#     when Cucumber::Core::Ast::OutlineTable::ExampleRow
+#       @scenario_name = scenario.scenario_outline.name
+#    end
+
+#   # Tags (as an array)
+#   # @scenario_tags = scenario.source_tag_names
+# end
+
 After do |scenario|
   if scenario.failed?
     Rails.logger.debug "Scenario #{scenario.name} failed : #{scenario.exception.message}"
-    Cucumber.wants_to_quit = true
-    raise scenario.exception
+    # Cucumber.wants_to_quit = true
+    # raise scenario.exception
   end
 end
 
+# AfterStep do |step|
+#   binding.pry
+# end
+
 ActionController::Base.allow_rescue = false
 
-begin
-  require 'database_cleaner'
-  require 'database_cleaner/cucumber'
-  DatabaseCleaner.strategy = :truncation
-rescue NameError
-  raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
-end
+# begin
+#   require 'database_cleaner'
+#   require 'database_cleaner/cucumber'
+#   DatabaseCleaner.strategy = :truncation
+# rescue NameError
+#   raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
+# end
 
-Around do |scenario, block|
-  DatabaseCleaner.cleaning(&block)
-end
+# Around do |scenario, block|
+#   DatabaseCleaner.cleaning(&block)
+# end
 
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
