@@ -16,7 +16,7 @@ describe('should allow user to Signup ', function() {
     it('User should Complete Signup process', function () {
 
         console.log("welcome to Upwork Page");
-        expect(element(by.id('signup')).isDisplayed()).toBe(true);
+        expect(element(by.id('signup123')).isDisplayed()).toBe(true);
         element(by.id('signup')).click();
         console.log("User Clicked on Signup link");
     });

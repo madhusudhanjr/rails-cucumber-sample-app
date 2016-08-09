@@ -8,6 +8,7 @@ And(/^I click on Signup link$/) do
     page.find_by_id("signup").click
   rescue Capybara::ElementNotFound => e
     Rails.logger.debug "#{e.backtrace.join("\n\t")}"
+    handle_exception(false)
   end
 end
 
@@ -21,19 +22,18 @@ Then(/^I should be able to see Hire and Work buttons$/) do
 end
 
 And(/^I click on Hire button$/) do
-  begin
-    page.find(:xpath, ".//*[@id='layout']/div[4]/div/div[4]/div[1]/a").click
-  rescue Capybara::ElementNotFound => e
-    Rails.logger.debug "#{e.backtrace.join("\n\t")}"
-  end
+  find_element(:xpath, ".//*[@id='layout']/div[4]/div/div[4]/div[1]/a", true)
+  @element.click
 end
 
 Then(/^I fill the Registration fields$/) do
   begin
-    fill_in "firstName", with: "John"
+    find_element(:xpath, "//*[contains(@id,'firstName_')]", true)
+    if @element.present?
+      @element.set("John")
+    end
     fill_in "lastName", with: "Snow"
     fill_in "companyName", with: "Game of thrones"
-    # fill_in "email", with: "johnsnow#{Time.now}@example.com"
     fill_in "email", with: Faker::Internet.email
     fill_in "password", with: "John@123"
     all(".checkbox-replacement-helper")[1].click
@@ -69,17 +69,3 @@ Then(/^I should be able to see validation error messages$/) do
     Rails.logger.debug "#{e.backtrace.join("\n\t")}"
   end
 end
-
-# admin_section = find("#admin")
-# expect(admin_section).not_to be_present
-
-# Then(/^I should not see the "([^\"]+)" ([^\s]+) field$/) do |name, type|
-#   page.should have_no_selector(:xpath, "//input[@type='#{type}' and @name='#{name}']")
-#   begin
-#     find(:xpath, "//input[@type='#{type}' and @name='#{name}']")
-#     false
-#   rescue Capybara::ElementNotFound
-#     true
-#   end 
-# end
-

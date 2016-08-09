@@ -1,3 +1,26 @@
+var FindElement = function(){
+    
+    this.getsignupElement = function(locator, is_mandate) {
+      try {
+        console.log("params " + locator + " params2 " + is_mandate);
+        var signUpInput = element(by.id(locator));
+        signUpInput.isDisplayed().toBe(true);
+        return signUpInput;
+      } catch (e) {
+        console.log("Error Stacktrace" + e.stack);
+        if (is_mandate) {
+          browser.driver.close().then(function()
+          {
+            process.exit(1);
+          });
+        } else {
+          return true;
+        }
+      }
+    };
+    
+  
+};
 
 describe('should allow user to Signup  ', function() {
 
@@ -15,11 +38,13 @@ describe('should allow user to Signup  ', function() {
     });
 
 
-    it('User should Complete Signup process', function () {
 
+    it('User should Complete Signup process', function () {
+        var findElement = new FindElement();
         console.log("welcome to Upwork Page");
         expect(element(by.id('signup')).isDisplayed()).toBe(true);
-        element(by.id('signup')).click();
+        var found_elem  = findElement.getsignupElement('signup123blahblah', false);
+        found_elem.click();
         console.log("User Clicked on Signup link");
     });
 

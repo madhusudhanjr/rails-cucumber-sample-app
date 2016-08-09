@@ -47,12 +47,15 @@ end
 
 # Below gemset used for integrating cucumber and selenium with rails
 group :test do
-  gem 'shoulda-matchers'
   gem 'cucumber-rails', require: false
-  gem 'database_cleaner'
   gem 'selenium'
   gem 'selenium-webdriver'
-  gem 'headless'
-  gem 'faker'
   gem 'simplecov', require: false
+  gem 'vcr'
+  gem 'vcr_cable'
+  gem 'webmock'
+  gem 'database_cleaner'
+  gem 'shoulda-matchers'
+  gem 'headless'
+  gem 'faker'  
 end
