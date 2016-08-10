@@ -8,11 +8,7 @@ var Jasmine2HtmlReporter = require('protractor-jasmine2-html-reporter');
        ],
         maxSessions: 1,
         specs: [
-            // 'RegistrationScenario.js',
-            // 'LoginScenario.js',
-             "signup_new.js"
-            // 'ValidLoginScenario.js',
-            // 'validLoginScenarioWithTwoParams.js'
+            'upwork_valid_and_invalid_signup.js'
         ],
         onPrepare: function () {
             browser.manage().window().maximize();

@@ -26,9 +26,6 @@ var FindElement = function(){
     this.getIputTextField = function(locator, is_mandate) {
       try {
         var inputTextField = element(by.model(locator));
-        // console.log("elem :            " + inputTextField);
-        // console.log("Expcted :      " + expect(inputTextField.isPresent()).toBe(true));
-        // inputTextField.isPresent().toBe(true);
         return inputTextField;
       } catch (e) {
         var log4js = require('log4js');
@@ -45,8 +42,96 @@ var FindElement = function(){
     };
 };
 
-// Step definitions
-describe('should allow user to Signup  ', function() {
+
+// Step definitions for invalid registration on upwork
+describe('should not allow invalid user to Signup  ', function() {
+
+    beforeAll(function()  {
+        console.log('beforeAll');
+    });
+
+    var pageLoaded = false;
+    beforeEach(function () {
+        if (!pageLoaded) {
+            browser.get('https://www.upwork.com/');
+            pageLoaded = true;
+            expect(browser.getTitle()).toEqual('Upwork - Hire Freelancers & Get Freelance Jobs Online');
+        }
+    });
+
+    it('User should be able to see Signup page', function () {
+        var findElement = new FindElement();
+        var signUpLink  = findElement.getsignupElement('signup', true);
+        signUpLink.click();
+        console.log("welcome to Upwork Page");
+        console.log("User Clicked on Signup link");
+    });
+
+    it('Verify title of Signup Page', function () {
+        console.log("Comapare Title of the Sign up page is equal to Create an Account - Upwork");
+        expect(browser.getTitle()).toEqual('Create an Account - Upwork');
+    });
+
+    it('User click on Hire button', function () {
+        var hireBtn = element(by.xpath('//a[text()="Hire"]'));
+        expect(hireBtn.isDisplayed()).toBe(true);
+        expect(hireBtn.getText()).toEqual('Hire');
+        hireBtn.click();
+        console.log("User Clicked on Hire Button");
+
+    });
+
+    it('User Entered blank First name', function () {
+        var findElement = new FindElement();
+        var firstNameTextField  = findElement.getIputTextField('userAccount.firstName', true);
+        firstNameTextField.sendKeys('');
+        console.log("User has Entered blank FirstName");
+    });
+
+    it('User Entered blank Last name', function () {
+        var findElement = new FindElement();
+        var lastNameTextField  = findElement.getIputTextField('userAccount.lastName', true);
+        lastNameTextField.sendKeys('');
+        console.log("User has Entered blank Lastname");
+    });
+
+    it('User Entered blank company Name', function () {
+
+        expect(element(by.xpath('//input[@name="companyName"]')).isPresent()).toBe(true);
+        element(by.xpath('//input[@name="companyName"]')).sendKeys('');
+        console.log("User has Entered blank Company Name");
+    });
+
+    it('User Entered blank Email', function () {
+        var randomValue = Date.now();
+        var findElement = new FindElement();
+        var emailTextField  = findElement.getIputTextField('userAccount.email', true);
+        emailTextField.sendKeys('');
+    });
+
+    it('User Entered blank Password', function () {
+        var findElement = new FindElement();
+        var passwordTextField  = findElement.getIputTextField('userAccount.password', true);
+        passwordTextField.sendKeys('');
+    });
+
+    it('User click on Submit button', function () {
+        element(by.css('[type="submit"]')).click();
+    });
+
+    it('I should be able to see validation error messages', function () {
+        expect(element(by.xpath('//*[@id="signupForm"]/div[3]/div[2]/div/div[1]/span/span/label')).getText()).toEqual('First Name is required');
+        expect(element(by.xpath('//*[@id="signupForm"]/div[3]/div[2]/div/div[2]/span/span/label')).getText()).toEqual('Last Name is required');
+        expect(element(by.xpath('//*[@id="signupForm"]/div[3]/div[2]/div/div[3]/span/span/label')).getText()).toEqual('Company Name is required');
+        expect(element(by.xpath('//*[@id="signupForm"]/div[3]/div[2]/div/div[5]/span/span/label')).getText()).toEqual('Email is required');
+        expect(element(by.xpath('//*[@id="signupForm"]/div[3]/div[2]/div/div[6]/span/span/label')).getText()).toEqual('Password is required');
+    });
+
+});
+
+
+// Step definitions for valid registration on upwork
+describe('should allow valid user to Signup  ', function() {
 
     beforeAll(function()  {
         console.log('beforeAll');
@@ -86,21 +171,21 @@ describe('should allow user to Signup  ', function() {
     it('User Entered First name', function () {
         var findElement = new FindElement();
         var firstNameTextField  = findElement.getIputTextField('userAccount.firstName', true);
-        firstNameTextField.sendKeys('sampleOletest');
+        firstNameTextField.sendKeys('Dexter');
         console.log("User has Entered FirstName");
     });
 
     it('User Entered Last name', function () {
         var findElement = new FindElement();
         var lastNameTextField  = findElement.getIputTextField('userAccount.lastName', true);
-        lastNameTextField.sendKeys('MR');
+        lastNameTextField.sendKeys('Morgan');
         console.log("User has Entered Lastname");
     });
 
     it('User Entered company Name', function () {
 
         expect(element(by.xpath('//input[@name="companyName"]')).isPresent()).toBe(true);
-        element(by.xpath('//input[@name="companyName"]')).sendKeys('ITC Infotech');
+        element(by.xpath('//input[@name="companyName"]')).sendKeys('Private Company');
         console.log("User has Entered Company Name");
     });
 
@@ -108,7 +193,7 @@ describe('should allow user to Signup  ', function() {
         var randomValue = Date.now();
         var findElement = new FindElement();
         var emailTextField  = findElement.getIputTextField('userAccount.email', true);
-        emailTextField.sendKeys('Test.rew' + randomValue + '@gmail.com');
+        emailTextField.sendKeys('dextermorgan' + randomValue + '@example.com');
     });
 
     it('User Entered Password', function () {
