@@ -8,10 +8,6 @@ SimpleCov.coverage_dir 'coverage/cucumber'
 require "selenium-webdriver"
 require 'cucumber/rails'
 
-# Initializing vcr
-require 'vcr'
-require 'webmock/cucumber'
-
 # Output scenario definition in logs before starting execution
 Before do |scenario|
   Rails.logger.debug "Starting scenario: #{scenario.name}"
@@ -62,18 +58,6 @@ end
 # Maximizing browser window before execution of scenario
 Before('@selenium') do
   page.driver.browser.manage.window.maximize
-end
-
-# Configuration of VCR recordings
-VCR.configure do |c|
-  c.cassette_library_dir = 'features/vcr_cassettes'
-  c.hook_into :webmock
-  c.ignore_localhost = true
-end
-
-# Creating tags for scenarios
-VCR.cucumber_tags do |t|
-  t.tag '@record_scenario'
 end
 
 # generic method for finding elements in DOM

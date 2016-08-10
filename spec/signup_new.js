@@ -1,5 +1,6 @@
+
+// Constructor have two getter methods which finds element in DOM and return the same for executing action
 var FindElement = function(){
-    
     this.getsignupElement = function(locator, is_mandate) {
       try {
         var signUpInput = element(by.id(locator));
@@ -21,10 +22,30 @@ var FindElement = function(){
         }
       }
     };
-    
-  
+
+    this.getIputTextField = function(locator, is_mandate) {
+      try {
+        var inputTextField = element(by.model(locator));
+        // console.log("elem :            " + inputTextField);
+        // console.log("Expcted :      " + expect(inputTextField.isPresent()).toBe(true));
+        // inputTextField.isPresent().toBe(true);
+        return inputTextField;
+      } catch (e) {
+        var log4js = require('log4js');
+        log4js.loadAppender('file');
+        log4js.addAppender(log4js.appenders.file('log/protractor.log'), 'protractor'); 
+        var logger = log4js.getLogger('protractor');
+        if (is_mandate == true) {
+          // Exit process and close browser window
+        } else {
+          return true;
+        }
+        logger.debug(e.stack);       
+      }
+    };
 };
 
+// Step definitions
 describe('should allow user to Signup  ', function() {
 
     beforeAll(function()  {
@@ -40,23 +61,18 @@ describe('should allow user to Signup  ', function() {
         }
     });
 
-
-
     it('User should Complete Signup process', function () {
         var findElement = new FindElement();
+        var signUpLink  = findElement.getsignupElement('signup', true);
+        signUpLink.click();
         console.log("welcome to Upwork Page");
-        expect(element(by.id('signup')).isDisplayed()).toBe(true);
-        var found_elem  = findElement.getsignupElement('signup', true);
-        found_elem.click();
         console.log("User Clicked on Signup link");
     });
-
 
     it('Compare the Title of Signup Page', function () {
         console.log("Comapare Title of the Sign up page is equal to Create an Account - Upwork");
         expect(browser.getTitle()).toEqual('Create an Account - Upwork');
     });
-
 
     it('User click on Hire button', function () {
         var Hire_btn=element(by.xpath('//a[text()="Hire"]'));
@@ -67,28 +83,19 @@ describe('should allow user to Signup  ', function() {
 
     });
 
-
-
     it('User Entered First name', function () {
-
-        expect(element(by.model('userAccount.firstName')).isPresent()).toBe(true);
-        element(by.model('userAccount.firstName')).sendKeys('sampleOletest');
-        expect(element(by.model('userAccount.firstName')).getAttribute('value')).toBe('sampleOletest');
+        var findElement = new FindElement();
+        var firstNameTextField  = findElement.getIputTextField('userAccount.firstName', true);
+        firstNameTextField.sendKeys('sampleOletest');
         console.log("User has Entered FirstName");
     });
 
-
     it('User Entered Last name', function () {
-
-        expect(element(by.model('userAccount.lastName')).isPresent()).toBe(true);
-        element(by.model('userAccount.lastName')).sendKeys('MR');
-        expect(element(by.model('userAccount.lastName')).getAttribute('value'))
-            .toBe('MR');
-
+        var findElement = new FindElement();
+        var lastNameTextField  = findElement.getIputTextField('userAccount.lastName', true);
+        lastNameTextField.sendKeys('MR');
         console.log("User has Entered Lastname");
     });
-
-
 
     it('User Entered company Name', function () {
 
@@ -97,37 +104,26 @@ describe('should allow user to Signup  ', function() {
         console.log("User has Entered Company Name");
     });
 
-
-    var randomValue = Date.now();
     it('User Entered Email', function () {
-
-        expect(element(by.model('userAccount.email')).isPresent()).toBe(true);
-        element(by.model('userAccount.email')).sendKeys('Test.rew' + randomValue + '@gmail.com');
+        var randomValue = Date.now();
+        var findElement = new FindElement();
+        var emailTextField  = findElement.getIputTextField('userAccount.email', true);
+        emailTextField.sendKeys('Test.rew' + randomValue + '@gmail.com');
     });
-
-    
-
 
     it('User Entered Password', function () {
-        expect(element(by.model('userAccount.password')).isPresent()).toBe(true);
-        element(by.model('userAccount.password')).sendKeys('manjuswamy1');
-        expect(element(by.model('userAccount.password')).getAttribute('value'))
-            .toBe('manjuswamy1');
+        var findElement = new FindElement();
+        var passwordTextField  = findElement.getIputTextField('userAccount.password', true);
+        passwordTextField.sendKeys('Password@123');
     });
 
-
     it('User Click on I accept check box', function () {
-
         element.all(by.css('.checkbox-replacement-helper')).get(1).click();
-          });
-
-
+    });
 
     it('User click on Submit button', function () {
         element(by.css('[type="submit"]')).click();
         console.log("End of Test");
-
     });
-
 
 });

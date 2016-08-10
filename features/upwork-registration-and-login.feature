@@ -1,7 +1,6 @@
 Feature: Upwork_Registration
 
   @selenium
-  @record_scenario
   Scenario: valid Registration on Upwork
 
     Given I open Upwork website

@@ -8,7 +8,6 @@ And(/^I click on Signup link$/) do
     page.find_by_id("signup").click
   rescue Capybara::ElementNotFound => e
     Rails.logger.debug "#{e.backtrace.join("\n\t")}"
-    handle_exception(false)
   end
 end
 
