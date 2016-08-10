@@ -41,6 +41,23 @@ Then(/^I fill the Registration fields$/) do
   end
 end
 
+
+Then(/^I fill the Registration fields only first name$/) do
+  begin
+    find_element(:xpath, "//*[contains(@id,'firstName_invalid')]", true)
+    if @element.present?
+      @element.set("John")
+    end
+    fill_in "lastName", with: "Snow"
+    fill_in "companyName", with: "Game of thrones"
+    fill_in "email", with: Faker::Internet.email
+    fill_in "password", with: "John@123"
+    all(".checkbox-replacement-helper")[1].click
+  rescue Capybara::ElementNotFound => e
+    Rails.logger.debug "#{e.backtrace.join("\n\t")}"
+  end
+end
+
 When(/^I click on Get Started button$/) do
   begin
     click_button("Get Started")
@@ -51,6 +68,7 @@ end
 
 Then(/^I should be able to Resister and login with success message$/) do
   begin
+    sleep(10)
     assert page.has_content?("Your account has been successfully created. Redirecting you...")
   rescue Minitest::Assertion => e
     Rails.logger.debug "#{e.backtrace.join("\n\t")}"
