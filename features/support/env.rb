@@ -26,17 +26,23 @@ end
 ActionController::Base.allow_rescue = false
 
 # Registration of webdriver for firefox and chrome
-Capybara.register_driver :selenium do |app|
-  http_client = Selenium::WebDriver::Remote::Http::Default.new
-  http_client.timeout = 20000
 
-  browser_array = ['chrome']
-  if browser_array.include? ENV['BROWSER']
+Capybara.register_driver :selenium do |app|
+  if ENV['BROWSER'].eql?('chrome')
     browser = ENV['BROWSER'].to_sym
+    prefs = {
+      "download" => { 
+        "default_directory" => FileDownloadHelpers::PATH.to_s 
+      }
+    }
+    Capybara::Selenium::Driver.new(app, :browser => browser, :prefs => prefs, :detach => :unspecified)
   else 
     browser = :firefox
-  end
-  Capybara::Selenium::Driver.new(app, :browser => browser, :http_client => http_client)
+    profile = Selenium::WebDriver::Firefox::Profile.new
+    profile['browser.download.dir'] = FileDownloadHelpers::PATH.to_s 
+    profile['browser.helperApps.neverAsk.saveToDisk'] = "text/csv" # content-type of file that will be downloaded
+    Capybara::Selenium::Driver.new(app, :browser => browser, :profile => profile)
+  end  
 end
 
 # Setting up default selector for finding elements in dom

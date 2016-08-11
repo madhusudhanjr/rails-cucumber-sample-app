@@ -54,5 +54,5 @@ group :test do
   gem 'database_cleaner'
   gem 'shoulda-matchers'
   gem 'headless'
-  gem 'faker'  
+  gem 'faker'
 end
