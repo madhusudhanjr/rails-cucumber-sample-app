@@ -1,7 +1,7 @@
 Feature: Download values to Excel
  
 @selenium
-  Scenario:
+  Scenario: Download values to Excel
     Given I visit the BSE stock exchange page
     And I click on S&P BSE SENSEX link
     Then I should be able to see "S&P BSE SENSEX"

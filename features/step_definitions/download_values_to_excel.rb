@@ -36,7 +36,7 @@ end
 
 Then(/^I should be able to validate data with web table$/) do
   @csv_complete_data = File.read("#{FileDownloadHelpers::PATH.to_s}/MarketWatch_11-00-2016.csv").split("\r\n")
-  
+  Rails.logger.info "\n\n Downloaded spreadsheet data array : \n\n #{@csv_complete_data} \n\n"
   @webtable_data_array = []
   webtable_page1_data = page.all(:css, "#ctl00_ContentPlaceHolder1_grd1 tbody tr")
   webtable_page1_data.each do |webtable_data|
@@ -55,6 +55,7 @@ Then(/^I should be able to validate data with web table$/) do
   
   # Deleteing unwanted page numbers from array
   @webtable_data_array = @webtable_data_array.delete_if{|x| x=="1,2"}
+  Rails.logger.info "Webapp table data array : \n\n #{@webtable_data_array}"
   @webtable_data_array == @csv_complete_data
 
 end
