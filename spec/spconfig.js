@@ -15,6 +15,10 @@ var Jasmine2HtmlReporter = require('protractor-jasmine2-html-reporter');
                 }
             }
         },
+
+        params: {
+            download_path: '/home/devbob/devbob/ITC/rails-cucumber-sample-app/tmp/downloads-protractor/'
+        },
         maxSessions: 1,
         specs: [
             'download_values_to_excel.js'

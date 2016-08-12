@@ -120,17 +120,17 @@ describe('should not allow invalid user to Signup  ', function() {
     });
 
     it('I should be able to see validation error messages', function () {
-        expect(element(by.xpath('//*[@id="signupForm"]/div[3]/div[2]/div/div[1]/span/span/label')).getText()).toEqual('First Name is required');
-        expect(element(by.xpath('//*[@id="signupForm"]/div[3]/div[2]/div/div[2]/span/span/label')).getText()).toEqual('Last Name is required');
-        expect(element(by.xpath('//*[@id="signupForm"]/div[3]/div[2]/div/div[3]/span/span/label')).getText()).toEqual('Company Name is required');
-        expect(element(by.xpath('//*[@id="signupForm"]/div[3]/div[2]/div/div[5]/span/span/label')).getText()).toEqual('Email is required');
-        expect(element(by.xpath('//*[@id="signupForm"]/div[3]/div[2]/div/div[6]/span/span/label')).getText()).toEqual('Password is required');
+        element(by.cssContainingText(['div', 'First Name is required']));
+        element(by.cssContainingText(['div', 'Last Name is required']));
+        element(by.cssContainingText(['div', 'Company Name is required']));
+        element(by.cssContainingText(['div', 'Email is required']));
+        element(by.cssContainingText(['div', 'Password is required']));
     });
 
 });
 
 
-// Step definitions for valid registration on upwork
+Step definitions for valid registration on upwork
 describe('should allow valid user to Signup  ', function() {
 
     beforeAll(function()  {

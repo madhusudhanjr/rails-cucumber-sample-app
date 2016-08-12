@@ -1,3 +1,16 @@
+var ExtractDayAndYear = function(){
+    var date = new Date();
+    var day = date.getDate();
+    var year = date.getFullYear();
+    this.getDay = function() {
+        return day;
+    };
+    this.getYear = function() {
+        return year;
+    };
+};
+
+
 // Step definition for BSE download data in excel sheet and verify
 
 describe('should allow user to download data in excel', function() {
@@ -26,7 +39,7 @@ describe('should allow user to download data in excel', function() {
 
     // click on more
     it('should allow to click on more for table report', function () {
-        var moreLink = element(by.xpath('//*[@id="wrap"]/div/div/div[4]/div[2]/div/div/div[1]/div[2]/div/a/img'));
+        var moreLink = element.all(by.css('img.spritemain.spritemorelink')).first();
         moreLink.click();
         console.log("User Clicked on more link");
     });
@@ -41,11 +54,9 @@ describe('should allow user to download data in excel', function() {
 
     // Download the csv file
     it('should allow to download excel', function () {
-        var date = new Date();
-        var day = date.getDate();
-        var year = date.getFullYear();
+        var extractDayAndYear = new ExtractDayAndYear();
         var fs = require('fs');
-        var filePath = "/home/devbob/devbob/ITC/rails-cucumber-sample-app/tmp/downloads-protractor/MarketWatch_" + day + "-00-" + year + ".csv"; 
+        var filePath = browser.params.download_path + "MarketWatch_" + extractDayAndYear.getDay() + "-00-" + extractDayAndYear.getYear() + ".csv";
         fs.unlinkSync(filePath);
         var Download_Icon = element(by.id('ctl00_ContentPlaceHolder1_imgDownload'))
         Download_Icon.click();
@@ -55,12 +66,10 @@ describe('should allow user to download data in excel', function() {
 
     // Verify the contents of downloaded CSV File
     it('should allow to verify data from downloaded excel', function () {
-        var date = new Date();
-        var day = date.getDate();
-        var year = date.getFullYear();
+        var extractDayAndYear = new ExtractDayAndYear();
         var Converter = require("csvtojson").Converter;
         var converter = new Converter({});
-        converter.fromFile("/home/devbob/devbob/ITC/rails-cucumber-sample-app/tmp/downloads-protractor/MarketWatch_" + day + "-00-" + year + ".csv",function(err,result){
+        converter.fromFile(browser.params.download_path + "MarketWatch_" + extractDayAndYear.getDay() + "-00-" + extractDayAndYear.getYear() + ".csv",function(err,result){
           var jsonData =  JSON.stringify(result);
         });
     });
@@ -72,9 +81,7 @@ describe('should allow user to download data in excel', function() {
         log4js.addAppender(log4js.appenders.file('log/protractor.log'), 'protractor'); 
         var logger = log4js.getLogger('protractor');
         
-        var date = new Date();
-        var day = date.getDate();
-        var year = date.getFullYear();
+        var extractDayAndYear = new ExtractDayAndYear();
         var tabledata = element.all(by.css("#ctl00_ContentPlaceHolder1_grd1"));
         var rows = tabledata.all(by.tagName("tr"));
         var cells = rows.all(by.tagName("td"));
@@ -84,7 +91,7 @@ describe('should allow user to download data in excel', function() {
         var fs = require('fs');
         var csv = require('fast-csv');
         var tArray=[];
-        fs.createReadStream("/home/devbob/devbob/ITC/rails-cucumber-sample-app/tmp/downloads-protractor/MarketWatch_" + day + "-00-" + year + ".csv")
+        fs.createReadStream(browser.params.download_path + "MarketWatch_" + extractDayAndYear.getDay() + "-00-" + extractDayAndYear.getYear() + ".csv")
         .pipe(csv())
         .on('data',function(data){
             tArray.push(data.join(" "));
