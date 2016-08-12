@@ -67,6 +67,11 @@ describe('should allow user to download data in excel', function() {
 
     // Validate data from sheet to web report
     it('should allow to verify data from downloaded excel', function () {
+        var log4js = require('log4js'); 
+        log4js.loadAppender('file');
+        log4js.addAppender(log4js.appenders.file('log/protractor.log'), 'protractor'); 
+        var logger = log4js.getLogger('protractor');
+        
         var date = new Date();
         var day = date.getDate();
         var year = date.getFullYear();
@@ -85,12 +90,12 @@ describe('should allow user to download data in excel', function() {
             tArray.push(data.join(" "));
         })
         .on('end',function(data){
-            // console.log(tArray);
-            // console.log(expect(rows.get(1).getText()).toContain(tArray[1].split(" ")[1]));
             for(i=0; i<=tArray.length; i++){
-                if(tArray[i] != undefined){
-                    // console.log("Validating " + tArray[i].split(" ")[1] + " in " + rows.get(i).getText());
+                try {
+                    logger.info(tArray[i]);
                     expect(rows.get(i).getText()).toContain(tArray[i].split(" ")[0]);
+                } catch(e) {
+                    logger.debug(e.message);    
                 }
                 
             }
