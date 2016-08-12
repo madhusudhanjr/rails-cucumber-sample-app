@@ -26,7 +26,7 @@ When(/^I click on download icon of CSV File$/) do
 end
 
 And(/^I should be able to see file is downloaded$/) do
-  @downloaded_file_contents = File.read("#{FileDownloadHelpers::PATH.to_s}/MarketWatch_11-00-2016.csv").split("\r\n")[0].split(",")
+  @downloaded_file_contents = File.read("#{FileDownloadHelpers::PATH.to_s}/MarketWatch_#{Time.now.strftime("%d")}-00-2016.csv").split("\r\n")[0].split(",")
 end
 
 And(/^I should be able to verify downloaded spreadsheet table headers "(.*?)" and "(.*?)" with the webtable headers$/) do |security_code, security_name|
@@ -35,7 +35,7 @@ And(/^I should be able to verify downloaded spreadsheet table headers "(.*?)" an
 end
 
 Then(/^I should be able to validate data with web table$/) do
-  @csv_complete_data = File.read("#{FileDownloadHelpers::PATH.to_s}/MarketWatch_11-00-2016.csv").split("\r\n")
+  @csv_complete_data = File.read("#{FileDownloadHelpers::PATH.to_s}/MarketWatch_#{Time.now.strftime("%d")}-00-2016.csv").split("\r\n")
   Rails.logger.info "\n\n Downloaded spreadsheet data array : \n\n #{@csv_complete_data} \n\n"
   @webtable_data_array = []
   webtable_page1_data = page.all(:css, "#ctl00_ContentPlaceHolder1_grd1 tbody tr")
