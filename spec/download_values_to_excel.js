@@ -85,9 +85,7 @@ describe('should allow user to download data in excel', function() {
         var tabledata = element.all(by.css("#ctl00_ContentPlaceHolder1_grd1"));
         var rows = tabledata.all(by.tagName("tr"));
         var cells = rows.all(by.tagName("td"));
-        var somedata = rows.map(function(elm) {
-            return elm.getText();
-        });
+        
         var fs = require('fs');
         var csv = require('fast-csv');
         var tArray=[];

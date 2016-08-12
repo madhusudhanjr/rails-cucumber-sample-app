@@ -54,7 +54,7 @@ Then(/^I should be able to validate data with web table$/) do
   end
   
   # Deleteing unwanted page numbers from array
-  @webtable_data_array = @webtable_data_array.delete_if{|x| x=="1,2"}
+  @webtable_data_array = @webtable_data_array.delete_if{|page_no| page_no == "1,2"}
   Rails.logger.info "Webapp table data array : \n\n #{@webtable_data_array}"
   @webtable_data_array == @csv_complete_data
 

@@ -125,6 +125,11 @@ describe('should not allow invalid user to Signup  ', function() {
         element(by.cssContainingText(['div', 'Company Name is required']));
         element(by.cssContainingText(['div', 'Email is required']));
         element(by.cssContainingText(['div', 'Password is required']));
+        // expect(element(by.xpath('//*[@id="signupForm"]/div[3]/div[2]/div/div[1]/span/span/label')).getText()).toEqual('First Name is required');
+        // expect(element(by.xpath('//*[@id="signupForm"]/div[3]/div[2]/div/div[2]/span/span/label')).getText()).toEqual('Last Name is required');
+        // expect(element(by.xpath('//*[@id="signupForm"]/div[3]/div[2]/div/div[3]/span/span/label')).getText()).toEqual('Company Name is required');
+        // expect(element(by.xpath('//*[@id="signupForm"]/div[3]/div[2]/div/div[5]/span/span/label')).getText()).toEqual('Email is required');
+        // expect(element(by.xpath('//*[@id="signupForm"]/div[3]/div[2]/div/div[6]/span/span/label')).getText()).toEqual('Password is required');
     });
 
 });
