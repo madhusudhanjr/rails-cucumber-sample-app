@@ -87,7 +87,7 @@ describe('should allow user to download data in excel', function() {
             for(i=0; i<=tArray.length; i++){
                 if(tArray[i] != undefined){
                     // console.log("Validating " + tArray[i].split(" ")[1] + " in " + rows.get(i).getText());
-                    expect(rows.get(i).getText()).toContain(tArray[i].split(" ")[1]);
+                    expect(rows.get(i).getText()).toContain(tArray[i].split(" ")[0]);
                 }
                 
             }
