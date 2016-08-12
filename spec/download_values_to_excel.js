@@ -11,7 +11,7 @@ describe('should allow user to download data in excel', function() {
        }
     });
 
-    //click on S&P BSE SENSEX link
+    // click on S&P BSE SENSEX link
     it('should allow to click on S&P BSE SENSEX link', function () {
         var sp_bse_link = element(by.linkText('S&P BSE SENSEX'));
         sp_bse_link.click();
@@ -24,14 +24,14 @@ describe('should allow user to download data in excel', function() {
         console.log("S&P BSE SENSEX is being Displayed");
     });
 
-    //click on more
+    // click on more
     it('should allow to click on more for table report', function () {
         var moreLink = element(by.xpath('//*[@id="wrap"]/div/div/div[4]/div[2]/div/div/div[1]/div[2]/div/a/img'));
         moreLink.click();
         console.log("User Clicked on more link");
     });
 
-    // //click on Download Icon of CSV File
+    // should allow to switch to current window in browser
     it('should allow to switch to current window', function () {
         browser.getAllWindowHandles().then(function(handles){
             browser.switchTo().window(handles[1]).then(function(){
@@ -39,23 +39,34 @@ describe('should allow user to download data in excel', function() {
         });
     });
 
+    // Download the csv file
     it('should allow to download excel', function () {
+        var date = new Date();
+        var day = date.getDate();
+        var fs = require('fs');
+        var filePath = "/home/devbob/devbob/ITC/rails-cucumber-sample-app/tmp/downloads-protractor/MarketWatch_" + day + "-00-2016.csv"; 
+        fs.unlinkSync(filePath);
         var Download_Icon = element(by.id('ctl00_ContentPlaceHolder1_imgDownload'))
         Download_Icon.click();
         console.log("User Clicked on Download_Icon");
         browser.sleep(1000);
     });
 
+    // Verify the contents of downloaded CSV File
     it('should allow to verify data from downloaded excel', function () {
+        var date = new Date();
+        var day = date.getDate();
         var Converter = require("csvtojson").Converter;
         var converter = new Converter({});
-        converter.fromFile("/home/devbob/Downloads/MarketWatch_12-00-2016.csv",function(err,result){
+        converter.fromFile("/home/devbob/devbob/ITC/rails-cucumber-sample-app/tmp/downloads-protractor/MarketWatch_" + day + "-00-2016.csv",function(err,result){
           var jsonData =  JSON.stringify(result);
-          // console.log("I wanted this : " + jsonData);
         });
     });
 
+    // Validate data from sheet to web report
     it('should allow to verify data from downloaded excel', function () {
+        var date = new Date();
+        var day = date.getDate();
         var tabledata = element.all(by.css("#ctl00_ContentPlaceHolder1_grd1"));
         var rows = tabledata.all(by.tagName("tr"));
         var cells = rows.all(by.tagName("td"));
@@ -65,7 +76,7 @@ describe('should allow user to download data in excel', function() {
         var fs = require('fs');
         var csv = require('fast-csv');
         var tArray=[];
-        fs.createReadStream('/home/devbob/Downloads/MarketWatch_12-00-2016.csv')
+        fs.createReadStream("/home/devbob/devbob/ITC/rails-cucumber-sample-app/tmp/downloads-protractor/MarketWatch_" + day + "-00-2016.csv")
         .pipe(csv())
         .on('data',function(data){
             tArray.push(data.join(" "));
