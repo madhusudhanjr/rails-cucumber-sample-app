@@ -43,8 +43,9 @@ describe('should allow user to download data in excel', function() {
     it('should allow to download excel', function () {
         var date = new Date();
         var day = date.getDate();
+        var year = date.getFullYear();
         var fs = require('fs');
-        var filePath = "/home/devbob/devbob/ITC/rails-cucumber-sample-app/tmp/downloads-protractor/MarketWatch_" + day + "-00-2016.csv"; 
+        var filePath = "/home/devbob/devbob/ITC/rails-cucumber-sample-app/tmp/downloads-protractor/MarketWatch_" + day + "-00-" + year + ".csv"; 
         fs.unlinkSync(filePath);
         var Download_Icon = element(by.id('ctl00_ContentPlaceHolder1_imgDownload'))
         Download_Icon.click();
@@ -56,9 +57,10 @@ describe('should allow user to download data in excel', function() {
     it('should allow to verify data from downloaded excel', function () {
         var date = new Date();
         var day = date.getDate();
+        var year = date.getFullYear();
         var Converter = require("csvtojson").Converter;
         var converter = new Converter({});
-        converter.fromFile("/home/devbob/devbob/ITC/rails-cucumber-sample-app/tmp/downloads-protractor/MarketWatch_" + day + "-00-2016.csv",function(err,result){
+        converter.fromFile("/home/devbob/devbob/ITC/rails-cucumber-sample-app/tmp/downloads-protractor/MarketWatch_" + day + "-00-" + year + ".csv",function(err,result){
           var jsonData =  JSON.stringify(result);
         });
     });
@@ -67,6 +69,7 @@ describe('should allow user to download data in excel', function() {
     it('should allow to verify data from downloaded excel', function () {
         var date = new Date();
         var day = date.getDate();
+        var year = date.getFullYear();
         var tabledata = element.all(by.css("#ctl00_ContentPlaceHolder1_grd1"));
         var rows = tabledata.all(by.tagName("tr"));
         var cells = rows.all(by.tagName("td"));
@@ -76,7 +79,7 @@ describe('should allow user to download data in excel', function() {
         var fs = require('fs');
         var csv = require('fast-csv');
         var tArray=[];
-        fs.createReadStream("/home/devbob/devbob/ITC/rails-cucumber-sample-app/tmp/downloads-protractor/MarketWatch_" + day + "-00-2016.csv")
+        fs.createReadStream("/home/devbob/devbob/ITC/rails-cucumber-sample-app/tmp/downloads-protractor/MarketWatch_" + day + "-00-" + year + ".csv")
         .pipe(csv())
         .on('data',function(data){
             tArray.push(data.join(" "));
